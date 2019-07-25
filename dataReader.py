@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 archivo = open("./input.htm", "tr")
 datos = ""
 resultados = [] 
@@ -8,17 +10,16 @@ for linea in archivo.readlines():
 archivo.close()
 
 
-todos = ['Alio','javi c.','RauL','Dani Sanchez B','Ruby','Adrian Rodriguez Besoy','Potes','Roberto Argaña','im mvp','RAGNAR LODBROK','Pablo','lombra']
+todos = ['Alio','javi c.','RauL','Dani Sanchez B','Ruby','Adrian Rodriguez Besoy','Potes','Roberto ArgaÃ±a','im mvp','Pablo','lombra']#,'RAGNAR LODBROK']
 grupoA = ['Alio','javi c.','RauL']
 grupoB = ['Dani Sanchez B','Ruby','Adrian Rodriguez Besoy']
-grupoC = ['Potes','Roberto Argaña','im mvp']
-grupoD = ['RAGNAR LODBROK','Pablo','lombra']
+grupoC = ['Potes','Roberto ArgaÃ±a','im mvp']
+grupoD = ['Pablo','lombra']
+grupos = [grupoA,grupoB,grupoC,grupoD]
+# grupoD = ['RAGNAR LODBROK','Pablo','lombra']
 
 datos = datos[datos.find('user-list'):]
-# encuentraDatos(todos)
-
-# print(datos)
-# print("-------------------------------------")
+clasificacionFinal = []
 
 def encuentraDatos(datos):
     name = ''
@@ -38,27 +39,55 @@ def encuentraDatos(datos):
         points = datos[posAPoints:posBPoints]
 
         datos = datos[posBPoints+28:]
-        resultados.append({'nombre': name, 'puntos':points, 'valorEquipo':money})
+        resultados.append({'nombre': u''+name, 'puntos':points, 'valorEquipo':money})
 
 
 def compruebaIntegrantes(integrantes):
-    for jugador in integrantes:
-        if jugador not in datos:
+    for jugador in resultados:
+        if (integrantes.index(jugador.get('nombre'))<0):
             print('####################################################')
-            print(jugador+' no se encuentra en el documento')
+            print(jugador.get('nombre')+' no se encuentra en la clasificacion')
             print('####################################################')
             return 0
     return 1
+    
+
+
+def generaResultados():
+    for grupo in grupos:
+        puntosTotales = 0
+        valorEquipoTotal = 0
+        NombreConjunto = ""
+        for jugador in grupo:
+            for coincidencia in resultados:
+                if(coincidencia.get('nombre') == jugador):
+                    puntosTotales += int(coincidencia.get('puntos'))
+                    valorEquipoTotal += float(coincidencia.get('valorEquipo')[0:6])
+                    NombreConjunto += " | "+coincidencia.get('nombre')
+        # print(NombreConjunto+"\n Puntos:"+str(puntosTotales)+"\n Valor de Equipo:"+str(valorEquipoTotal))
+        # print("----------------------------------------")
+
+        clasificacionFinal.append({'nombre': NombreConjunto+" |", 'puntos':str(puntosTotales), 'valorEquipo':str(valorEquipoTotal)})
+
+def ordenaResultados():
+    global clasificacionFinal
+    clasificacionFinal = sorted(clasificacionFinal, key=lambda elem: elem['valorEquipo'], reverse=True)
+    clasificacionFinal = sorted(clasificacionFinal, key=lambda elem: elem['puntos'], reverse=True)
+
 
 def imprimeResultados():
-    for player in resultados:
-        print(player['nombre'])
-        print(player['puntos'])
-        print(player['valorEquipo'])
-        print('-------------')
+    global clasificacionFinal
+    for elem in clasificacionFinal:
+        print('##### '+elem['nombre']+' ####')
+        print('Puntos: '+elem['puntos'])
+        print('Valor de Equipo:  '+elem['valorEquipo'])
+        print('----------------------------------------')
 
 
-if(compruebaIntegrantes):
+
+encuentraDatos(datos)
+if(compruebaIntegrantes(todos)):
     compruebaIntegrantes(todos)
-    encuentraDatos(datos)
+    generaResultados()
+    ordenaResultados()
     imprimeResultados()
