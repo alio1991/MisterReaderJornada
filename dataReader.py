@@ -10,10 +10,10 @@ for linea in archivo.readlines():
 archivo.close()
 
 
-todos = ['Alio','javi c.','RauL','Dani Sanchez B','Ruby','Adrian Rodriguez Besoy','Potes','Roberto ArgaÃ±a','im mvp','Pablo','lombra']#,'RAGNAR LODBROK']
+todos = ['Alio','javi c.','RauL','Dani Sanchez B','Ruby','Adrian Rodriguez Besoy','Potes','Roberto Argaña','im mvp','Pablo','lombra']#,'RAGNAR LODBROK']
 grupoA = ['Alio','javi c.','RauL']
 grupoB = ['Dani Sanchez B','Ruby','Adrian Rodriguez Besoy']
-grupoC = ['Potes','Roberto ArgaÃ±a','im mvp']
+grupoC = ['Potes','Roberto Argaña','im mvp']
 grupoD = ['Pablo','lombra']
 grupos = [grupoA,grupoB,grupoC,grupoD]
 # grupoD = ['RAGNAR LODBROK','Pablo','lombra']
@@ -67,7 +67,7 @@ def generaResultados():
         # print(NombreConjunto+"\n Puntos:"+str(puntosTotales)+"\n Valor de Equipo:"+str(valorEquipoTotal))
         # print("----------------------------------------")
 
-        clasificacionFinal.append({'nombre': NombreConjunto+" |", 'puntos':str(puntosTotales), 'valorEquipo':str(valorEquipoTotal)})
+        clasificacionFinal.append({'nombre': NombreConjunto+" |", 'puntos':str(puntosTotales), 'valorEquipo':str(int(valorEquipoTotal))})
 
 def ordenaResultados():
     global clasificacionFinal
@@ -76,12 +76,15 @@ def ordenaResultados():
 
 
 def imprimeResultados():
-    global clasificacionFinal
-    for elem in clasificacionFinal:
-        print('##### '+elem['nombre']+' ####')
-        print('Puntos: '+elem['puntos'])
-        print('Valor de Equipo:  '+elem['valorEquipo'])
-        print('----------------------------------------')
+	global clasificacionFinal
+	print(' ')
+	i=1
+	for elem in clasificacionFinal:
+		print(str(i)+'º ### '+elem['nombre']+' ####')
+		print('Puntos: '+elem['puntos']+' pts')
+		print('Valor de Equipo:  '+elem['valorEquipo']+'M')
+		print('----------------------------------------')
+		i+=1
 
 
 
